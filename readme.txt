@@ -1,0 +1,1 @@
+Taken from http://tyrovr.com/2014/06/29/three-vr-renderer-tutorial.html
