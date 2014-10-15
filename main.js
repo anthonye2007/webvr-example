@@ -58,19 +58,13 @@ function initScene() {
     camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
     camera.position.z = 300;
     scene = new THREE.Scene();
-    //var geometry = new THREE.IcosahedronGeometry(0, 2);
-    var radius = 50;
-    var segments = 16;
-    var rings = 16;
-    var geometry = new THREE.SphereGeometry(radius, segments, rings);
-    //var material = new THREE.MeshNormalMaterial();
+    var geometry = new THREE.BoxGeometry(200,200,5); //x,y,z
     var material = new THREE.MeshLambertMaterial({color: 0xCC0000});
     mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
     // create a point light
-    var pointLight =
-      new THREE.PointLight(0xFFFFFF);
+    var pointLight = new THREE.PointLight(0xFFFFFF);
 
     // set its position
     pointLight.position.x = 10;
