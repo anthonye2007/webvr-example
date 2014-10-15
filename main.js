@@ -78,7 +78,7 @@ function initScene() {
 
 function createWall(x, y, z, scene, rotationY, rotationX) {
     var geometry = new THREE.BoxGeometry(10,10,1); //x,y,z
-    var material = new THREE.MeshLambertMaterial({color: 0xCC0000});
+    var material = new THREE.MeshLambertMaterial({color: 0xFFFDD0});
     var wall = new THREE.Mesh(geometry, material);
 
     wall.position.x = x;
