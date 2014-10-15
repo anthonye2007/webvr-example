@@ -1,6 +1,6 @@
 "use strict";
 
-var camera, scene, mesh;
+var camera, scene;
 var renderCanvas, renderer, vrrenderer;
 var vrHMD, vrHMDSensor;
 
@@ -54,25 +54,43 @@ function initScene() {
     var VIEW_ANGLE = 45,
       ASPECT = WIDTH / HEIGHT,
       NEAR = 0.1,
-      FAR = 10000;
+      FAR = 100;
     camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
-    camera.position.z = 300;
+    camera.position.z = 0;
     scene = new THREE.Scene();
-    var geometry = new THREE.BoxGeometry(200,200,5); //x,y,z
-    var material = new THREE.MeshLambertMaterial({color: 0xCC0000});
-    mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
+    
+    createWall(0,0,-5, scene, 0); // front
+    createWall(5,0,0, scene, Math.PI/2); // right
+    createWall(-5,0,0, scene, Math.PI/2); // left
+    createWall(0,0,5, scene, 0); // back
+    createWall(0,-5,0, scene, 0, Math.PI/2); // floor
+    //createWall(0,5,0, scene, 0, Math.PI/2); // ceiling
 
     // create a point light
     var pointLight = new THREE.PointLight(0xFFFFFF);
 
     // set its position
-    pointLight.position.x = 10;
-    pointLight.position.y = 50;
-    pointLight.position.z = 130;
+    pointLight.position.x = 0;
+    pointLight.position.y = 10;
+    pointLight.position.z = 2;
 
     // add to the scene
     scene.add(pointLight);
+}
+
+function createWall(x, y, z, scene, rotationY, rotationX) {
+    var geometry = new THREE.BoxGeometry(10,10,1); //x,y,z
+    var material = new THREE.MeshLambertMaterial({color: 0xCC0000});
+    var wall = new THREE.Mesh(geometry, material);
+
+    wall.position.x = x;
+    wall.position.y = y;
+    wall.position.z = z;
+
+    wall.rotation.y = rotationY;
+    wall.rotation.x = rotationX || 0;
+
+    scene.add(wall);
 }
 
 function initRenderer() {
@@ -87,7 +105,6 @@ function initRenderer() {
 
 function render() {
     requestAnimationFrame(render);
-    mesh.rotation.y += 0.01;
     var state = vrHMDSensor.getState();
     camera.quaternion.set(state.orientation.x, state.orientation.y, state.orientation.z, state.orientation.w);
     vrrenderer.render(scene, camera);
