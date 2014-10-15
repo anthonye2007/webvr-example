@@ -64,17 +64,15 @@ function initScene() {
     createWall(-5,0,0, scene, Math.PI/2); // left
     createWall(0,0,5, scene, 0); // back
     createWall(0,-5,0, scene, 0, Math.PI/2); // floor
-    //createWall(0,5,0, scene, 0, Math.PI/2); // ceiling
+    createWall(0,5,0, scene, 0, Math.PI/2); // ceiling
 
     // create a point light
     var pointLight = new THREE.PointLight(0xFFFFFF);
 
-    // set its position
     pointLight.position.x = 0;
-    pointLight.position.y = 10;
+    pointLight.position.y = 2;
     pointLight.position.z = 2;
 
-    // add to the scene
     scene.add(pointLight);
 }
 
