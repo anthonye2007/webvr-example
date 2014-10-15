@@ -4,6 +4,10 @@ var camera, scene, mesh;
 var renderCanvas, renderer, vrrenderer;
 var vrHMD, vrHMDSensor;
 
+// set the scene size
+    var WIDTH = 1280,
+      HEIGHT = 800;
+
 window.addEventListener("load", function() {
     if (navigator.getVRDevices) {
         navigator.getVRDevices().then(vrDeviceCallback);
@@ -46,10 +50,6 @@ function vrDeviceCallback(vrdevs) {
 }
 
 function initScene() {
-    // set the scene size
-    var WIDTH = 400,
-      HEIGHT = 300;
-
     // set some camera attributes
     var VIEW_ANGLE = 45,
       ASPECT = WIDTH / HEIGHT,
@@ -67,6 +67,18 @@ function initScene() {
     var material = new THREE.MeshLambertMaterial({color: 0xCC0000});
     mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
+
+    // create a point light
+    var pointLight =
+      new THREE.PointLight(0xFFFFFF);
+
+    // set its position
+    pointLight.position.x = 10;
+    pointLight.position.y = 50;
+    pointLight.position.z = 130;
+
+    // add to the scene
+    scene.add(pointLight);
 }
 
 function initRenderer() {
@@ -75,7 +87,7 @@ function initRenderer() {
         canvas: renderCanvas,
     });
     renderer.setClearColor(0x555555); // background color
-    renderer.setSize(1280, 800, false);
+    renderer.setSize(WIDTH, HEIGHT, false);
     vrrenderer = new THREE.VRRenderer(renderer, vrHMD);
 }
 
