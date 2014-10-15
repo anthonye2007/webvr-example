@@ -50,34 +50,61 @@ function vrDeviceCallback(vrdevs) {
 }
 
 function initScene() {
-    // set some camera attributes
+    // camera
     var VIEW_ANGLE = 45,
       ASPECT = WIDTH / HEIGHT,
       NEAR = 0.1,
       FAR = 100;
     camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
     camera.position.z = 0;
+
     scene = new THREE.Scene();
     
-    createWall(0,0,-5, scene, 0); // front
-    createWall(5,0,0, scene, Math.PI/2); // right
-    createWall(-5,0,0, scene, Math.PI/2); // left
-    createWall(0,0,5, scene, 0); // back
-    createWall(0,-5,0, scene, 0, Math.PI/2); // floor
-    createWall(0,5,0, scene, 0, Math.PI/2); // ceiling
+    // create walls
+    var width = 100;
+    //createWall(0,0,-width, scene, 0); // front
+    createWall(width,0,0, scene, Math.PI/2); // right
+    createWall(-width,0,0, scene, Math.PI/2); // left
+    //createWall(0,0,5, scene, 0); // back
+    //createWall(0,-5,0, scene, 0, Math.PI/2); // floor
+    //createWall(0,5,0, scene, 0, Math.PI/2); // ceiling
 
-    // create a point light
+    // lighting
     var pointLight = new THREE.PointLight(0xFFFFFF);
-
     pointLight.position.x = 0;
     pointLight.position.y = 2;
     pointLight.position.z = 2;
-
     scene.add(pointLight);
+
+    // create a canvas element
+    // taken from http://stemkoski.github.io/Three.js/Texture-From-Canvas.html
+    // also see http://stackoverflow.com/a/15257807/1212045
+    var canvas1 = document.createElement('canvas');
+    canvas1.width = 200;
+    canvas1.heigth = 50;
+    var context1 = canvas1.getContext('2d');
+    context1.font = "10px Arial";
+    context1.fillStyle = "rgba(0,255,0,0.95)";
+    context1.fillText('Hello, world!', 20, 30);
+    
+    // canvas contents will be used for a texture
+    var texture1 = new THREE.Texture(canvas1) 
+    texture1.needsUpdate = true;
+
+    var material1 = new THREE.MeshBasicMaterial( {map: texture1, side:THREE.DoubleSide } );
+    material1.transparent = true;
+
+    var mesh1 = new THREE.Mesh(
+        new THREE.PlaneGeometry(canvas1.width, canvas1.height),
+        material1
+      );
+    mesh1.position.set(0,0,-width - 1);
+    scene.add( mesh1 );
 }
 
 function createWall(x, y, z, scene, rotationY, rotationX) {
-    var geometry = new THREE.BoxGeometry(10,10,1); //x,y,z
+    var sideLength = 200;
+    var geometry = new THREE.BoxGeometry(sideLength, sideLength,1); //x,y,z
     var material = new THREE.MeshLambertMaterial({color: 0xFFFDD0});
     var wall = new THREE.Mesh(geometry, material);
 
